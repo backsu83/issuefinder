@@ -1,0 +1,54 @@
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+  tomcat:
+    accesslog:
+      pattern: "%{X-Forwarded-For}i %T %D %l %u %t \"%r\" %s %b \"%{Referer}i\" \"%{User-Agent}i\""
+      enabled: true
+  compression:
+    enabled: true
+    mime-types: application/json
+  port: 5000
+
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://inssuefinder-dev.czgpnzk7zfrq.ap-northeast-2.rds.amazonaws.com:3306/issuefinder
+      username: issuefind
+      password: 12345678
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    format_sql: true
+    open-in-view: true
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    check-template: true
+    suffix: .html
+    mode: HTML
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+crawler-url:
+  paxent: http://www.paxnet.co.kr/stock/sise/totalRanking
+  naver: https://finance.naver.com/item/board.nhn?code=
