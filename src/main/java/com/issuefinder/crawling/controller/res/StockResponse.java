@@ -1,4 +1,4 @@
-package com.issuefinder.crawling.controller;
+package com.issuefinder.crawling.controller.res;
 
 
 import com.issuefinder.crawling.contants.MessageCode;

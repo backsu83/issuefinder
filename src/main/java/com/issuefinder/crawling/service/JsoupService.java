@@ -5,6 +5,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
 
 public class JsoupService {
@@ -19,6 +21,13 @@ public class JsoupService {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void init(Map<String , Integer> data, long days) {
+        LocalDate now = LocalDate.now();
+        for (LocalDate start = now; start.isAfter(now.minusDays(days)); start = start.minusDays(1)) {
+            data.put(start.toString() , 1);
         }
     }
 }

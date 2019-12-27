@@ -1,11 +1,13 @@
 package com.issuefinder.crawling.service;
 
+import com.issuefinder.crawling.controller.req.CrawlerRequest;
 import com.issuefinder.crawling.exception.ResourceNotFoundException;
 import com.issuefinder.crawling.model.CrawlerDto;
 import com.issuefinder.crawling.model.entity.RankEntity;
+import com.issuefinder.crawling.model.vo.ResourceType;
 import com.issuefinder.crawling.repository.RankRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,34 +15,50 @@ import java.util.List;
 @Service
 public class CrawlerService {
 
-    @Autowired
     private RankRepository rankRepository;
-
-    @Autowired
     private StockService stockService;
+    private Crawlerable naverArticleCrawler;
+    private Crawlerable naverSiseCrawler;
 
-    public void saveAll() {
-        List<String> companyCodes =  stockService.getAll();
+    public CrawlerService(final RankRepository rankRepository,
+                          final StockService stockService,
+                          final NaverArticleCrawler naverArticleCrawler,
+                          final NaverSiseCrawler naverSiseCrawler
+    ) {
+        this.rankRepository = rankRepository;
+        this.stockService = stockService;
+        this.naverArticleCrawler = naverArticleCrawler;
+        this.naverSiseCrawler = naverSiseCrawler;
+    }
+
+    @Transactional
+    public void saveAll(CrawlerRequest request) {
+        List<String> companyCodes = stockService.getAll();
+        CrawlerDto crawlerDto = null;
         for (String companyCode : companyCodes) {
-            CrawlerDto crawler = new NaverArticleCrawler().parser(companyCode);
-            rankRepository.save(crawler);
+            request.setCompanyCode(companyCode);
+            if(request.getResourceType() == ResourceType.ARTICLE) {
+                crawlerDto = naverArticleCrawler.parser(request);
+            } else if (request.getResourceType() == ResourceType.SISE) {
+                crawlerDto = naverSiseCrawler.parser(request);
+            }
+            rankRepository.save(crawlerDto);
         }
     }
 
-    public void saveArticle(String companyCode) {
-        CrawlerDto crawler = new NaverArticleCrawler().parser(companyCode);
+    public void saveArticle(CrawlerRequest request) {
+        CrawlerDto crawler = naverArticleCrawler.parser(request);
         rankRepository.save(crawler);
     }
 
-    public void savePrice(String companyCode) {
-        CrawlerDto crawler = new NaverPriceCrawler().parser(companyCode);
-        //rankRepository.save(crawler);
+    public void saveSise(CrawlerRequest request) {
+        CrawlerDto crawler = naverSiseCrawler.parser(request);
+        rankRepository.save(crawler);
     }
-
 
     public List<RankEntity> getRankList(String companyCode) {
         List<RankEntity> list = rankRepository.findRankListByCompanyCode(companyCode);
-        if(list.size() == 0) {
+        if (list.size() == 0) {
             throw new ResourceNotFoundException(companyCode);
         }
         return list;

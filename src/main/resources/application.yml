@@ -19,20 +19,27 @@ spring:
       username: issuefind
       password: 12345678
       driver-class-name: com.mysql.cj.jdbc.Driver
-
+  host:
+    paxnet: http://www.paxnet.co.kr/stock/sise/totalRanking
+    naver-article: https://finance.naver.com/item/board.nhn
+    naver-price: https://finance.naver.com/item/sise_day.nhn
   jpa:
     hibernate:
       ddl-auto: validate
     show-sql: true
     format_sql: true
     open-in-view: true
-
   thymeleaf:
     cache: false
     prefix: classpath:/templates/
     check-template: true
     suffix: .html
     mode: HTML
+  task:
+    scheduling:
+      pool:
+        size: 8
+      thread-name-prefix: my-scheduler
 
 management:
   endpoint:
@@ -49,6 +56,3 @@ management:
       prometheus:
         enabled: true
 
-crawler-url:
-  paxent: http://www.paxnet.co.kr/stock/sise/totalRanking
-  naver: https://finance.naver.com/item/board.nhn?code=

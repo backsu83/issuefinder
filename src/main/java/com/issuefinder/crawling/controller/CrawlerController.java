@@ -1,17 +1,16 @@
 package com.issuefinder.crawling.controller;
 
+import com.issuefinder.crawling.controller.req.CrawlerRequest;
 import com.issuefinder.crawling.service.CrawlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Validated
 @RestController
+@RequestMapping("/api")
 public class CrawlerController {
 
     @Autowired
@@ -22,15 +21,15 @@ public class CrawlerController {
 //        return new StockResponse<>(rankService.paxnetRank(), SUCCESS);
 //    }
 
-    @GetMapping("/crawler/article/all")
-    public ResponseEntity saveAricleAll()  {
-        crawlerService.saveAll();
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
+//    @GetMapping("/crawler/article/all")
+//    public ResponseEntity saveAricleAll()  {
+//        crawlerService.saveAll();
+//        return new ResponseEntity(HttpStatus.CREATED);
+//    }
 
-    @GetMapping("/crawler/article/{companyCode}")
-    public ResponseEntity saveArticle(@PathVariable String companyCode)  {
-        crawlerService.saveArticle(companyCode);
+    @PostMapping("/crawler/article")
+    public ResponseEntity saveArticle(CrawlerRequest request)  {
+        crawlerService.saveArticle(request);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -40,9 +39,9 @@ public class CrawlerController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/crawler/price/{companyCode}")
-    public ResponseEntity savePrice(@PathVariable String companyCode)  {
-        crawlerService.savePrice(companyCode);
+    @PostMapping("/crawler/sise")
+    public ResponseEntity saveSise(CrawlerRequest request)  {
+        crawlerService.saveSise(request);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

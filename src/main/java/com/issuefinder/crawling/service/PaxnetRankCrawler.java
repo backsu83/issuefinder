@@ -1,13 +1,15 @@
 package com.issuefinder.crawling.service;
 
 import com.google.common.collect.Lists;
+import com.issuefinder.crawling.config.properties.HostProperties;
+import com.issuefinder.crawling.controller.req.CrawlerRequest;
 import com.issuefinder.crawling.model.CrawlerDto;
 import com.issuefinder.crawling.model.PaxnetRank;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +21,16 @@ import static com.issuefinder.crawling.model.vo.ResourceType.ARTICLE;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingInt;
 
-@Service
+@Component
 public class PaxnetRankCrawler extends JsoupService implements Crawlerable {
 
-    @Value("${crawler-url.paxent}")
-    private String paxent;
+    @Autowired
+    private HostProperties host;
 
     @Override
-    public CrawlerDto parser(String companyCode) {
+    public CrawlerDto parser(CrawlerRequest request) {
 
-        Document doc = getJsuup(paxent);
+        Document doc = getJsuup(host.getPaxnet());
         Elements elements = doc.select(".list-box tbody tr a");
 
         List<PaxnetRank> paxlist = new ArrayList<>();
@@ -58,7 +60,7 @@ public class PaxnetRankCrawler extends JsoupService implements Crawlerable {
                 .collect(groupingBy(PaxnetRank::getCompanyCode, summingInt(PaxnetRank::getPoint)));
 
         CrawlerDto crawler = CrawlerDto.builder()
-                .companyCode(companyCode)
+                .companyCode(request.getCompanyCode())
                 .refer(PAXNET.name())
                 .resourceType(ARTICLE.getCode())
                 .crawlerList(result)

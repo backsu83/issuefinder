@@ -1,24 +1,25 @@
 package com.issuefinder.crawling.controller;
 
+import com.issuefinder.crawling.controller.res.StockResponse;
 import com.issuefinder.crawling.service.CrawlerService;
 import com.issuefinder.crawling.service.StockService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.issuefinder.crawling.contants.MessageCode.SUCCESS;
 
 @Validated
 @RestController
+@RequestMapping("/api")
 public class StockController {
 
     private StockService stockService;
     private CrawlerService crawlerService;
 
-    @Autowired
-    public StockController(StockService stockService, CrawlerService crawlerService) {
+    public StockController(final StockService stockService, final CrawlerService crawlerService) {
         this.stockService = stockService;
         this.crawlerService = crawlerService;
     }
