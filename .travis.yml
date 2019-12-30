@@ -6,8 +6,6 @@ branches:
   only:
     - master
 
-before_script: "./mvn compile"
-
 cache:
   directories:
     - '$HOME/.m2/repository'
