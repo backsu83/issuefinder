@@ -16,6 +16,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>
@@ -26,6 +28,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -70,6 +76,12 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
@@ -126,65 +138,74 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.9.2</version>
         </dependency>
+        <dependency>
+            <!-- Model Mapper -->
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.3.5</version>
+        </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <!-- The jOOQ code generator plugin -->
-            <plugin>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-codegen-maven</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-jpa</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <generator>
-                                <database>
-                                    <name>org.jooq.meta.extensions.jpa.JPADatabase</name>
-                                    <properties>
-                                        <property>
-                                            <key>packages</key>
-                                            <value>
-                                                com.issuefinder.crawling
-                                            </value>
-                                        </property>
-                                        <property>
-                                            <key>useAttributeConverters</key>
-                                            <value>true</value>
-                                        </property>
-                                        <property>
-                                            <key>unqualifiedSchema</key>
-                                            <value>none</value>
-                                        </property>
-                                        <property>
-                                            <key>hibernate.physical_naming_strategy</key>
-                                            <value>org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy</value>
-                                        </property>
-                                    </properties>
-                                    <includes>.*</includes>
-                                </database>
-                                <generate>
-                                    <javaTimeTypes>true</javaTimeTypes>
-                                    <generatedAnnotation>true</generatedAnnotation>
-                                </generate>
-                                <target>
-                                    <packageName>com.issuefinder.crawling.generated</packageName>
-                                    <directory>src/main/java</directory>
-                                </target>
-                            </generator>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--</plugin>-->
+            <!--&lt;!&ndash; The jOOQ code generator plugin &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.jooq</groupId>-->
+                <!--<artifactId>jooq-codegen-maven</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>generate-jpa</id>-->
+                        <!--<phase>generate-sources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>generate</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<generator>-->
+                                <!--<database>-->
+                                    <!--<name>org.jooq.meta.extensions.jpa.JPADatabase</name>-->
+                                    <!--<properties>-->
+                                        <!--<property>-->
+                                            <!--<key>packages</key>-->
+                                            <!--<value>-->
+                                                <!--com.issuefinder.crawling-->
+                                            <!--</value>-->
+                                        <!--</property>-->
+                                        <!--<property>-->
+                                            <!--<key>useAttributeConverters</key>-->
+                                            <!--<value>true</value>-->
+                                        <!--</property>-->
+                                        <!--<property>-->
+                                            <!--<key>unqualifiedSchema</key>-->
+                                            <!--<value>none</value>-->
+                                        <!--</property>-->
+                                        <!--<property>-->
+                                            <!--<key>hibernate.physical_naming_strategy</key>-->
+                                            <!--<value>-->
+                                                <!--org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy-->
+                                            <!--</value>-->
+                                        <!--</property>-->
+                                    <!--</properties>-->
+                                    <!--<includes>.*</includes>-->
+                                    <!--<excludes />-->
+                                <!--</database>-->
+                                <!--<generate>-->
+                                    <!--<javaTimeTypes>true</javaTimeTypes>-->
+                                    <!--<generatedAnnotation>true</generatedAnnotation>-->
+                                <!--</generate>-->
+                                <!--<target>-->
+                                    <!--<packageName>templates</packageName>-->
+                                    <!--<directory>target/classes</directory>-->
+                                <!--</target>-->
+                            <!--</generator>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
 
 </project>

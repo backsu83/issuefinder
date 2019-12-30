@@ -25,7 +25,7 @@ spring:
     naver-price: https://finance.naver.com/item/sise_day.nhn
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
     format_sql: true
     open-in-view: true
@@ -40,6 +40,11 @@ spring:
       pool:
         size: 8
       thread-name-prefix: my-scheduler
+  jwt:
+    token:
+      secret-key: secret-key
+      expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+
 
 management:
   endpoint:

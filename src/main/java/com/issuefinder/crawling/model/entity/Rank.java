@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
                 columnNames={"company_code","collect_day", "refer", "resource_type"}
                 )
 )
-public class RankEntity {
+public class Rank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

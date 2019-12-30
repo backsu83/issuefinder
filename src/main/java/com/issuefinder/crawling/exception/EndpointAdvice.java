@@ -43,10 +43,11 @@ public class EndpointAdvice extends ResponseEntityExceptionHandler {
 //        return new ErrorResponse(ErrorCode.BAD_REQUEST.name(), e.getMessage());
 //    }
 
-    @ExceptionHandler(Throwable.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse uncaughtException(Throwable e) {
-        return new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR.name(), e.getMessage());
-    }
+//    @ExceptionHandler(Throwable.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public ErrorResponse uncaughtException(Throwable e) {
+//        log.info("getStackTrace : {}" , e.getStackTrace());
+//        return new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR.name(), e.getMessage());
+//    }
 
 }
