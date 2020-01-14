@@ -4,16 +4,14 @@ import com.issuefinder.crawling.controller.res.StockResponse;
 import com.issuefinder.crawling.service.CrawlerService;
 import com.issuefinder.crawling.service.StockService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.issuefinder.crawling.contants.MessageCode.SUCCESS;
 
 @Validated
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class StockController {
 
     private StockService stockService;
