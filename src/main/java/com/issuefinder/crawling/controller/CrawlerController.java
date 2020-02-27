@@ -21,11 +21,11 @@ public class CrawlerController {
 //        return new StockResponse<>(rankService.paxnetRank(), SUCCESS);
 //    }
 
-//    @GetMapping("/crawler/article/all")
-//    public ResponseEntity saveAricleAll()  {
-//        crawlerService.saveAll();
-//        return new ResponseEntity(HttpStatus.CREATED);
-//    }
+    @PostMapping("/crawler/all")
+    public ResponseEntity saveAricleAll(CrawlerRequest request)  {
+        crawlerService.saveAll(request);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 
     @PostMapping("/crawler/article")
     public ResponseEntity saveArticle(CrawlerRequest request)  {
@@ -45,5 +45,13 @@ public class CrawlerController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @PostMapping("/posttest")
+    public void posttest() {
+        System.out.println("POST");
+    }
 
+    @GetMapping("/gettest")
+    public void gettest() {
+        System.out.println("GET");
+    }
 }

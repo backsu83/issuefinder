@@ -13,11 +13,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-import static com.issuefinder.crawling.model.vo.ReferType.NAVER;
-import static com.issuefinder.crawling.model.vo.ResourceType.SISE;
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.summingInt;
 
 @Slf4j
 @Component
@@ -27,17 +26,15 @@ class NaverSiseCrawler extends JsoupService implements Crawlerable {
     private HostProperties host;
 
     @Override
-    public CrawlerDto parser(CrawlerRequest request) {
+    public Map<String, Summary> parser(CrawlerRequest request) {
 
         List<NaverSise> dayprice = new ArrayList<>();
         LinkedList<String> queue = new LinkedList<>();
         LocalDate now = LocalDate.now();
 
         for (LocalDate start = now; start.isAfter(now.minusDays(request.getLimitDays())); start = start.minusDays(1)) {
-            dayprice.add(new NaverSise(start.toString(), 0));
+            dayprice.add(new NaverSise(start.toString(), 0 , 0));
         }
-
-        System.out.println(request.toString());
 
         parserLoop: for (int i = 0; i < 20; i++) {
             Document doc = getJsuup(host.getNaverPrice() + "?code=" + request.getCompanyCode() + "&page=" + i);
@@ -72,16 +69,11 @@ class NaverSiseCrawler extends JsoupService implements Crawlerable {
             }
         }
 
-        Map<String, Integer> result = dayprice.stream()
+        final Collector<NaverSise, Summary, Summary> collector = new SiseSummaryCollector();
+        final Map<String, Summary> map = dayprice.stream()
                 .filter(x->LocalDate.parse(x.getCollectDay()).isAfter(now.minusDays(request.getLimitDays())))
-                .collect(groupingBy(NaverSise::getCollectDay, summingInt(NaverSise::getClosingPrice)));
-
-        CrawlerDto crawler = CrawlerDto.builder()
-                .companyCode(request.getCompanyCode())
-                .refer(NAVER.name())
-                .resourceType(SISE.getCode())
-                .crawlerList(result)
-                .build();
-        return crawler;
+                .collect(Collectors.groupingBy(o -> o.getCollectDay(), collector));
+        System.out.println("map = " + map);
+        return map;
     }
 }
