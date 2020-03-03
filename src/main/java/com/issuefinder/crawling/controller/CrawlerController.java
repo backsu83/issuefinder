@@ -16,11 +16,6 @@ public class CrawlerController {
     @Autowired
     private CrawlerService crawlerService;
 
-//    @GetMapping("/crawler/paxnet")
-//    public StockResponse getRank()  {
-//        return new StockResponse<>(rankService.paxnetRank(), SUCCESS);
-//    }
-
     @PostMapping("/crawler/all")
     public ResponseEntity saveAricleAll(CrawlerRequest request)  {
         crawlerService.saveAll(request);
@@ -33,25 +28,15 @@ public class CrawlerController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/crawler/{companyCode}")
-    public ResponseEntity delelteBy(@PathVariable String companyCode) {
-        crawlerService.deleteBy(companyCode);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
     @PostMapping("/crawler/sise")
     public ResponseEntity saveSise(CrawlerRequest request)  {
         crawlerService.saveSise(request);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PostMapping("/posttest")
-    public void posttest() {
-        System.out.println("POST");
-    }
-
-    @GetMapping("/gettest")
-    public void gettest() {
-        System.out.println("GET");
+    @DeleteMapping("/crawler/{companyCode}")
+    public ResponseEntity delelteBy(@PathVariable String companyCode) {
+        crawlerService.deleteBy(companyCode);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

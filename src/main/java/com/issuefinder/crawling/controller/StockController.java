@@ -21,21 +21,6 @@ public class StockController {
     private final CrawlerService crawlerService;
     private final DartApi dartApi;
 
-//    @GetMapping("/stock/{companyCode}")
-//    public StockResponse getStock(@PathVariable String companyCode) {
-//        return new StockResponse(stockService.getStock(companyCode), SUCCESS);
-//    }
-
-    @GetMapping("/stock/{companyCode}/article")
-    public StockResponse getRank(@PathVariable String companyCode) {
-        return new StockResponse(crawlerService.getAricle(companyCode), SUCCESS);
-    }
-
-    @GetMapping("/stock/{companyCode}/sise")
-    public StockResponse getSise(@PathVariable String companyCode) {
-        return new StockResponse(crawlerService.getSise(companyCode), SUCCESS);
-    }
-
     @GetMapping("/stock/{companyCode}")
     public StockResponse getSiseAndAricle(@PathVariable String companyCode) {
         return new StockResponse(crawlerService.getSiseAndAricle(companyCode), SUCCESS);

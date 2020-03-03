@@ -1,20 +1,21 @@
 package com.issuefinder.crawling.service;
 
-import com.google.common.collect.HashBiMap;
 import com.issuefinder.crawling.controller.req.CrawlerRequest;
 import com.issuefinder.crawling.exception.ResourceNotFoundException;
 import com.issuefinder.crawling.model.entity.Article;
 import com.issuefinder.crawling.model.entity.Sise;
-import com.issuefinder.crawling.model.entity.SiseDto;
 import com.issuefinder.crawling.model.entity.Stock;
-import com.issuefinder.crawling.model.vo.ResourceType;
+import com.issuefinder.crawling.model.entity.StockBase;
 import com.issuefinder.crawling.repository.ArticleRepository;
 import com.issuefinder.crawling.repository.SiseRepository;
+import com.issuefinder.crawling.repository.StockRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,26 +23,15 @@ import static com.issuefinder.crawling.model.vo.ReferType.NAVER;
 
 
 @Service
+@RequiredArgsConstructor
 public class CrawlerService {
 
-    private ArticleRepository articleRepository;
-    private SiseRepository siseRepository;
-    private StockService stockService;
-    private Crawlerable naverArticleCrawler;
-    private Crawlerable naverSiseCrawler;
-
-    public CrawlerService(final ArticleRepository articleRepository,
-                          final StockService stockService,
-                          final NaverArticleCrawler naverArticleCrawler,
-                          final NaverSiseCrawler naverSiseCrawler,
-                          final SiseRepository siseRepository
-    ) {
-        this.articleRepository = articleRepository;
-        this.stockService = stockService;
-        this.naverArticleCrawler = naverArticleCrawler;
-        this.naverSiseCrawler = naverSiseCrawler;
-        this.siseRepository = siseRepository;
-    }
+    private final ArticleRepository articleRepository;
+    private final SiseRepository siseRepository;
+    private final StockRepository stockRepository;
+    private final StockService stockService;
+    private final Crawlerable naverArticleCrawler;
+    private final Crawlerable naverSiseCrawler;
 
     @Transactional
     public void saveAll(CrawlerRequest request) {
@@ -81,43 +71,29 @@ public class CrawlerService {
         }
     }
 
-    public List<Article> getAricle(String companyCode) {
-        List<Article> list = articleRepository.findRanksByCompanyCode(companyCode);
-        if (list.size() == 0) {
-            throw new ResourceNotFoundException(companyCode);
-        }
-        return list;
-    }
-
-    public List<Sise> getSise(String companyCode) {
-        List<Sise> list = siseRepository.findRanksByCompanyCode(companyCode);
-        if (list.size() == 0) {
-            throw new ResourceNotFoundException(companyCode);
-        }
-        return list;
-    }
-
-    public HashBiMap getSiseAndAricle(String companyCode) {
+    public Map<String, StockBase> getSiseAndAricle(String companyCode) {
         List<Sise> siseRepo = siseRepository.findRanksByCompanyCode(companyCode);
         List<Article> articleRepo = articleRepository.findRanksByCompanyCode(companyCode);
-        HashBiMap bimap = HashBiMap.create();
-
+        Stock stock = stockRepository.findStockByCompanyCode(companyCode);
+        Map<String, StockBase> map = new HashMap<>();
+        StockBase base = null;
         for (Article article : articleRepo) {
+            base = new StockBase();
+            base.setCompanyCode(article.getCompanyCode());
+            base.setViews(article.getViews());
+            base.setSympathy(article.getSympathy());
+            base.setUnsympathy(article.getUnsympathy());
+            base.setScore(article.getScore());
+            base.setCompanyName(stock.getCompanyName());
             for (Sise sise : siseRepo) {
-                SiseDto sisedto = new SiseDto();
-                if (sise.getCompanyCode().equals(article.getCompanyCode())) {
-                    sisedto.setCompanyCode(sise.getCompanyCode());
-                    sisedto.setVolume(sise.getVolume());
-                    sisedto.setClosingPrice(sise.getClosingPrice());
-                    sisedto.setViews(article.getViews());
-                    sisedto.setSympathy(article.getSympathy());
-                    sisedto.setUnsympathy(article.getUnsympathy());
-                    sisedto.setScore(article.getScore());
-                    bimap.put(article.getCollectDay(), sisedto);
+                if(sise.getCollectDay().equals(article.getCollectDay())) {
+                    base.setVolume(sise.getVolume());
+                    base.setClosingPrice(sise.getClosingPrice());
                 }
             }
+            map.put(article.getCollectDay().toString(), base);
         }
-        return bimap;
+        return map;
     }
 
     public void deleteBy(String companyCode) {
