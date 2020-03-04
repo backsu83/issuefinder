@@ -11,7 +11,7 @@ import static com.issuefinder.crawling.contants.MessageCode.SUCCESS;
 @Validated
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class StockController {
 
     private StockService stockService;
