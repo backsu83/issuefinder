@@ -16,4 +16,5 @@ public class StockBase {
     private Integer sympathy;
     private Integer unsympathy;
     private Integer score;
+    private String date;
 }

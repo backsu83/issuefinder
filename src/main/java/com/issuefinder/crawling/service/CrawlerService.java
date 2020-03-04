@@ -10,12 +10,12 @@ import com.issuefinder.crawling.repository.ArticleRepository;
 import com.issuefinder.crawling.repository.SiseRepository;
 import com.issuefinder.crawling.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,11 +71,11 @@ public class CrawlerService {
         }
     }
 
-    public Map<String, StockBase> getSiseAndAricle(String companyCode) {
+    public JSONArray getSiseAndAricle(String companyCode) {
         List<Sise> siseRepo = siseRepository.findRanksByCompanyCode(companyCode);
         List<Article> articleRepo = articleRepository.findRanksByCompanyCode(companyCode);
         Stock stock = stockRepository.findStockByCompanyCode(companyCode);
-        Map<String, StockBase> map = new HashMap<>();
+        JSONArray resArray  = new JSONArray();
         StockBase base = null;
         for (Article article : articleRepo) {
             base = new StockBase();
@@ -91,9 +91,10 @@ public class CrawlerService {
                     base.setClosingPrice(sise.getClosingPrice());
                 }
             }
-            map.put(article.getCollectDay().toString(), base);
+            base.setDate(article.getCollectDay().toString());
+            resArray.add(base);
         }
-        return map;
+        return resArray;
     }
 
     public void deleteBy(String companyCode) {
