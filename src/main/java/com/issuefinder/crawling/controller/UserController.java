@@ -37,26 +37,22 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{username}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(@ApiParam("Username") @PathVariable String username) {
         userService.delete(username);
         return username;
     }
 
     @GetMapping(value = "/{username}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserResponse search(@ApiParam("Username") @PathVariable String username) {
         return modelMapper.map(userService.search(username), UserResponse.class);
     }
 
     @GetMapping(value = "/me")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     public UserResponse whoami(HttpServletRequest req) {
         return modelMapper.map(userService.whoami(req), UserResponse.class);
     }
 
     @GetMapping("/refresh")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     public String refresh(HttpServletRequest req) {
         return userService.refresh(req.getRemoteUser());
     }

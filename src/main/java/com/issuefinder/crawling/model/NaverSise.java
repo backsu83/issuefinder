@@ -17,10 +17,13 @@ public class NaverSise {
     private int comparePrice;
     private int topPrice;
     private int lowPrice;
-    private int volume;
+    private long volume;
 
-    public NaverSise(String collectDay, int closingPrice) {
+    public NaverSise(String collectDay, int closingPrice , long volume) {
         this.collectDay = collectDay;
         this.closingPrice = closingPrice;
+        this.volume = volume;
     }
+
+
 }

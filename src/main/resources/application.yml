@@ -61,3 +61,8 @@ management:
       prometheus:
         enabled: true
 
+api:
+  dart:
+    scheme: https
+    host: opendart.fss.or.kr/api/list.json
+    key: 08e4bc8989ff28ba72412d7aefef6fe40e49eada

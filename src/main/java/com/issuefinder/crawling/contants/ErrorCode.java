@@ -6,4 +6,5 @@ public enum ErrorCode {
     BAD_REQUEST,
     INTERNAL_SERVER_ERROR,
     EXTERNAL_API_ERROR,
+    METHOD_NOT_ALLOWED
 }
