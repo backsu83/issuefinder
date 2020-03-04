@@ -23,11 +23,11 @@ public class EventSchduler {
                 .build());
     }
 
-    @Scheduled(cron = "0 30 23 * * *")
-    public void batchArticle() {
-        crawlerService.saveAll(CrawlerRequest.builder()
-                .resourceType(ResourceType.ARTICLE)
-                .limitDays(1L)
-                .build());
-    }
+//    @Scheduled(cron = "0 30 23 * * *")
+//    public void batchArticle() {
+//        crawlerService.saveAll(CrawlerRequest.builder()
+//                .resourceType(ResourceType.ARTICLE)
+//                .limitDays(1L)
+//                .build());
+//    }
 }

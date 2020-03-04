@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,16 +15,13 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
+@DynamicInsert
 @Data
 @Entity
-@Table(name = "stock_rank",
-        uniqueConstraints=
-        @UniqueConstraint(
-                name = "unique_collect",
-                columnNames={"company_code","collect_day", "refer", "resource_type"}
-                )
-)
-public class Rank {
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "stock_article")
+public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,8 +36,14 @@ public class Rank {
     @Column(name = "refer")
     private String refer;
 
-    @Column(name = "resource_type")
-    private Integer resourceType;
+    @Column(name = "views")
+    private Integer views;
+
+    @Column(name = "sympathy")
+    private Integer sympathy;
+
+    @Column(name = "unsympathy")
+    private Integer unsympathy;
 
     @Column(name = "score")
     private Integer score;
@@ -50,3 +56,4 @@ public class Rank {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 }
+

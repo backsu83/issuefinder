@@ -1,14 +1,14 @@
 package com.issuefinder.crawling.repository;
 
-import com.issuefinder.crawling.model.entity.Rank;
+import com.issuefinder.crawling.model.entity.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 
-public interface RankRepository extends JpaRepository<Rank, Integer> {
+public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
-    List<Rank> findRanksByCompanyCode(String companyCode);
+    List<Article> findRanksByCompanyCode(String companyCode);
     void deleteByCompanyCode(String companyCode);
 //    private final DSLContext dsl;
 //

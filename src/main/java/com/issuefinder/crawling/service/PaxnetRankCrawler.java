@@ -3,7 +3,6 @@ package com.issuefinder.crawling.service;
 import com.google.common.collect.Lists;
 import com.issuefinder.crawling.config.properties.HostProperties;
 import com.issuefinder.crawling.controller.req.CrawlerRequest;
-import com.issuefinder.crawling.model.CrawlerDto;
 import com.issuefinder.crawling.model.PaxnetRank;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,8 +15,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import static com.issuefinder.crawling.model.vo.ReferType.PAXNET;
-import static com.issuefinder.crawling.model.vo.ResourceType.ARTICLE;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingInt;
 
@@ -28,7 +25,7 @@ public class PaxnetRankCrawler extends JsoupService implements Crawlerable {
     private HostProperties host;
 
     @Override
-    public CrawlerDto parser(CrawlerRequest request) {
+    public Map<String, Summary> parser(CrawlerRequest request) {
 
         Document doc = getJsuup(host.getPaxnet());
         Elements elements = doc.select(".list-box tbody tr a");
@@ -59,13 +56,13 @@ public class PaxnetRankCrawler extends JsoupService implements Crawlerable {
         Map<String, Integer> result = paxlist.stream()
                 .collect(groupingBy(PaxnetRank::getCompanyCode, summingInt(PaxnetRank::getPoint)));
 
-        CrawlerDto crawler = CrawlerDto.builder()
-                .companyCode(request.getCompanyCode())
-                .refer(PAXNET.name())
-                .resourceType(ARTICLE.getCode())
-                .crawlerList(result)
-                .build();
+//        CrawlerDto crawler = CrawlerDto.builder()
+//                .companyCode(request.getCompanyCode())
+//                .refer(PAXNET.name())
+//                .resourceType(ARTICLE.getCode())
+//                .crawlerList(result)
+//                .build();
 
-        return crawler;
+        return null;
     }
 }
