@@ -13,7 +13,7 @@ import static com.issuefinder.crawling.contants.MessageCode.SUCCESS;
 @Validated
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 public class StockController {
 
