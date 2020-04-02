@@ -42,10 +42,10 @@ public class JwtTokenProvider {
         config.setSecretKey(Base64.getEncoder().encodeToString(config.getSecretKey().getBytes()));
     }
 
-    public String createToken(String username, List<Role> roles) {
+    public String createToken(String email) {
 
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
+        Claims claims = Jwts.claims().setSubject(email);
+//        claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + Long.parseLong(config.getExpireLength()));

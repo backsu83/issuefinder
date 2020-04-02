@@ -23,12 +23,6 @@ spring:
     paxnet: http://www.paxnet.co.kr/stock/sise/totalRanking
     naver-article: https://finance.naver.com/item/board.nhn
     naver-price: https://finance.naver.com/item/sise_day.nhn
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    format_sql: true
-    open-in-view: true
   thymeleaf:
     cache: false
     prefix: classpath:/templates/

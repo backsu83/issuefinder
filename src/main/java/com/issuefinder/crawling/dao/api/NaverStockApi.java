@@ -19,21 +19,4 @@ public class NaverStockApi {
         this.API_HOST = apiHost;
         this.restTemplate = restTemplate;
     }
-
-    public void test() {
-        String url = "/properties/contents/";
-        MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(API_HOST + url);
-        URI uri = builder.queryParams(paramMap).build().encode().toUri();
-
-       // ResponseEntity<> response = restTemplate.postForEntity(uri, new HttpEntity<>(headers), PushResponse.class);
-
-        //ParameterizedTypeReference responseType = new ParameterizedTypeReference<List<ContentPropertiesReceiveDto>>() {};
-
-//        ResponseEntity<List<ContentPropertiesReceiveDto>> responseEntityData
-//                = ApiExecutor.execute(() -> restTemplate.exchange(uri, HttpMethod.GET, null, responseType));
-//        return ApiExecutor.getBody(responseEntityData, this.API_HOST);
-//
-
-    }
 }

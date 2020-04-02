@@ -1,4 +1,4 @@
-package com.issuefinder.crawling.api;
+package com.issuefinder.crawling.dao.api;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -14,10 +14,6 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.jooq">
-        <level value="DEBUG"/>
-    </logger>
-
     <logger name="org.springframework.jdbc">
         <level value="DEBUG"/>
     </logger>

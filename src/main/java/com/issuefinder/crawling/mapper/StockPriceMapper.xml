@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.issuefinder.crawling.mapper.StockPriceMapper">
+
+    <select id="findPrice" resultType="com.issuefinder.crawling.model.StockPrice">
+        SELECT st.company_code
+             , st.collect_day
+             , si.closing_price
+             , si.collect_day
+             , si.volume
+             , st.views
+             , st.score
+             , st.sympathy
+             , st.unsympathy
+        FROM stock_article st
+               JOIN stock_sise si ON st.company_code = si.company_code AND st.collect_day = si.collect_day
+        WHERE si.company_code = #{companyCode}
+          AND si.collect_day BETWEEN #{startDate} AND #{endDate}
+          AND si.closing_price > 0
+          AND si.volume > 0
+        ORDER BY si.collect_day
+    </select>
+
+    <select id="findScore" resultType="int">
+        SELECT
+               IFNULL(ROUND(SUM(st.score)/(count(*))),0) as score
+        FROM stock_article st
+               JOIN stock_sise si ON st.company_code = si.company_code AND st.collect_day = si.collect_day
+               JOIN stock sk ON st.company_code = sk.company_code
+        WHERE si.company_code = #{companyCode}
+          AND si.collect_day BETWEEN #{startDate} AND #{endDate}
+        ORDER BY si.collect_day;
+    </select>
+
+    <insert id="saveOhlc" parameterType="com.issuefinder.crawling.dao.api.KoscomStockOhlc">
+        INSERT INTO quantreport.stock_ohlc
+        (
+             company_code
+           , collect_day
+           , open_price
+           , high_price
+           , low_price
+           , trade_price
+        )
+        SELECT #{isuSrtCd}
+             , #{collectDay}
+             , #{opnprc}
+             , #{hgprc}
+             , #{lwprc}
+             , #{trdPrc}
+    </insert>
+
+    <insert id="saveArticle" parameterType="com.issuefinder.crawling.model.StockArticle">
+        INSERT INTO quantreport.stock_article
+        (
+             company_code
+           , collect_day
+           , refer
+           , score
+           , sympathy
+           , unsympathy
+           , views
+        )
+        SELECT #{companyCode}
+             , #{collectDay}
+             , #{refer}
+             , #{score}
+             , #{sympathy}
+             , #{unsympathy}
+             , #{views}
+    </insert>
+
+    <insert id="savePrice" parameterType="com.issuefinder.crawling.model.StockPrice">
+        INSERT INTO quantreport.stock_sise
+        (
+             company_code
+           , collect_day
+           , closing_price
+           , volume
+        )
+        SELECT #{companyCode}
+             , #{collectDay}
+             , #{closingPrice}
+             , #{volume}
+    </insert>
+</mapper>
+

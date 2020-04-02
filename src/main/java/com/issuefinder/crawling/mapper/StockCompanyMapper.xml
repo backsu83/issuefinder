@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.issuefinder.crawling.mapper.StockCompanyMapper">
+    <resultMap type="com.issuefinder.crawling.model.StockCompany" id="stockCompanyMap">
+        <result property="companyName" column="company_name"/>
+        <result property="companyCode" column="company_code"/>
+        <result property="scaleType" column="scale_type"/>
+    </resultMap>
+
+    <select id="findCompanyInfo" resultType="com.issuefinder.crawling.model.StockCompany">
+        SELECT business_code
+             , business_name
+             , company_name
+             , company_code
+             , scale_type
+          FROM quantreport.stock
+         WHERE company_code = #{companyCode}
+    </select>
+
+    <select id="findCompanyOther" resultType="com.issuefinder.crawling.model.StockCompany">
+        SELECT business_code
+             , business_name
+             , company_name
+             , company_code
+             , scale_type
+          FROM quantreport.stock
+         WHERE scale_type = #{scale_type}
+         LIMIT 1;
+    </select>
+
+    <select id="findCompanyList" resultMap="stockCompanyMap">
+        SELECT company_name
+             , company_code
+             , scale_type
+          FROM quantreport.stock
+    </select>
+</mapper>

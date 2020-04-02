@@ -1,10 +1,12 @@
 package com.issuefinder.crawling.controller;
 
-import com.issuefinder.crawling.api.DartApi;
 import com.issuefinder.crawling.controller.res.StockResponse;
-import com.issuefinder.crawling.service.CrawlerService;
+import com.issuefinder.crawling.dao.api.KoscomApi;
 import com.issuefinder.crawling.service.StockService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,22 +20,40 @@ import static com.issuefinder.crawling.contants.MessageCode.SUCCESS;
 public class StockController {
 
     private final StockService stockService;
-    private final CrawlerService crawlerService;
-    private final DartApi dartApi;
+    private final KoscomApi koscomApi;
 
-    @GetMapping("/stock/{companyCode}")
-    public StockResponse getSiseAndAricle(@PathVariable String companyCode) {
-        return new StockResponse(crawlerService.getSiseAndAricle(companyCode), SUCCESS);
+    @ApiOperation(value="종목 조회")
+    @GetMapping("/stock/{companyCode}/info")
+    public StockResponse getCompanyInfo(@PathVariable String companyCode) {
+        return new StockResponse(stockService.getStockCompany(companyCode), SUCCESS);
     }
 
-    @GetMapping("stock/article/all")
-    public StockResponse getArticleAll() {
-        return new StockResponse(stockService.getArticleAll() , SUCCESS);
+    @ApiOperation(value="종목 스코어 조회")
+    @GetMapping("stock/{companyCode}/price")
+    public StockResponse getStockPrice(
+            @PathVariable String companyCode,
+            @RequestParam String startDate,
+            @RequestParam String endDate
+    ) {
+        return new StockResponse(stockService.getStockPrice(companyCode, startDate, endDate));
     }
 
+    @ApiOperation(value="종목 시고저중 조회")
+    @GetMapping("stock/{market}/highlow")
+    public StockResponse getStockPrice(@PathVariable String market) {
+        return new StockResponse(koscomApi.getOhlclists(market), SUCCESS);
+    }
 
-    @GetMapping("stock/dart")
-    public StockResponse getInformation() {
-        return new StockResponse(dartApi.getList() , SUCCESS);
+    @ApiOperation(value="종목 현재가 조회")
+    @GetMapping("stock/{companyCode}/realtime")
+    public StockResponse getRealTimePrice(@PathVariable String companyCode) {
+        return new StockResponse(stockService.getRealTimePrice(companyCode), SUCCESS);
+    }
+
+    @ApiOperation(value="종목전체 시고저중 저장")
+    @GetMapping("stock/highlow/save")
+    public ResponseEntity saveOhlc() {
+        return new ResponseEntity<>(stockService.saveOhlc(), HttpStatus.OK);
+
     }
 }

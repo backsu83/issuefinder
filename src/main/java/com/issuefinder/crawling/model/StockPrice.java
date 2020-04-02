@@ -1,20 +1,21 @@
-package com.issuefinder.crawling.model.entity;
+package com.issuefinder.crawling.model;
 
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StockBase {
+public class StockPrice {
     private String companyCode;
-    private String companyName;
+    private LocalDate collectDay;
     private Integer closingPrice;
     private Long volume;
     private Integer views;
+    private Integer score;
     private Integer sympathy;
     private Integer unsympathy;
-    private Integer score;
-    private String date;
 }

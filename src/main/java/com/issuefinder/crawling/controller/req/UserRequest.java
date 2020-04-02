@@ -1,23 +1,33 @@
 package com.issuefinder.crawling.controller.req;
 
 
-import com.issuefinder.crawling.contants.Role;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 public class UserRequest {
-    @ApiModelProperty(position = 0)
-    private String username;
-    @ApiModelProperty(position = 1)
+
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
     private String email;
-    @ApiModelProperty(position = 2)
+
+    @Size(min = 8, message = "비밀번호는 8자리 이상으로 입력해 주시기 바랍니다.")
     private String password;
-    @ApiModelProperty(position = 3)
-    List<Role> roles;
+
+    private String username;
+
+    @Pattern(regexp = "[FM]" , message = "성별을 올바른 형식으로 입력해 주시기 바랍니다.")
+    private String gender;
+    private String phone;
+
+    @Size(min = 8, max=8 , message = "생년월일을 올바른 형식으로 입력해 주시기 바랍니다.")
+    @Pattern(regexp = "^[0-9]+$")
+    private String birthday;
 
 }

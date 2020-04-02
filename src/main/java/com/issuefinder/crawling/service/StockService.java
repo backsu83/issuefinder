@@ -1,44 +1,85 @@
 package com.issuefinder.crawling.service;
 
+import com.issuefinder.crawling.dao.api.KoscomApi;
+import com.issuefinder.crawling.dao.api.KoscomRealTimePrice;
+import com.issuefinder.crawling.dao.api.KoscomStockOhlc;
 import com.issuefinder.crawling.exception.ResourceNotFoundException;
-import com.issuefinder.crawling.model.entity.Article;
-import com.issuefinder.crawling.model.entity.Sise;
-import com.issuefinder.crawling.model.entity.Stock;
-import com.issuefinder.crawling.repository.ArticleRepository;
-import com.issuefinder.crawling.repository.SiseRepository;
-import com.issuefinder.crawling.repository.StockRepository;
+import com.issuefinder.crawling.mapper.StockCompanyMapper;
+import com.issuefinder.crawling.mapper.StockPriceMapper;
+import com.issuefinder.crawling.model.StockCompany;
+import com.issuefinder.crawling.model.StockPrice;
+import com.issuefinder.crawling.model.StockRealAnalysis;
+import com.issuefinder.crawling.model.vo.MarketType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class StockService {
 
-    private final StockRepository repository;
-    private final SiseRepository siseRepository;
-    private final ArticleRepository articleRepository;
+    private final StockCompanyMapper companyMapper;
+    private final StockPriceMapper priceMapper;
+    private final KoscomApi koscomApi;
 
-    public Stock getStock(String companyCode) {
-        Stock stocks =  repository.findStockByCompanyCode(companyCode);
+    public StockCompany getStockCompany(String companyCode) {
+        StockCompany stocks = companyMapper.findCompanyInfo(companyCode);
         if (ObjectUtils.isEmpty(stocks)) {
             throw new ResourceNotFoundException(companyCode);
         }
         return stocks;
     }
 
-    public List<Stock> getAll() {
-        return repository.findAll();
+    public StockRealAnalysis getStockPrice(String companyCode, String startDate, String endDate) {
+        List<StockPrice> stockprice = priceMapper.findPrice(companyCode, startDate, endDate);
+        StockCompany stocks = companyMapper.findCompanyInfo(companyCode);
+
+        int score = priceMapper.findScore(companyCode, startDate, endDate);
+        StockRealAnalysis real = new StockRealAnalysis();
+        int tradePrcie = getRealTimePrice(companyCode);
+
+        real.setCompanyName(stocks.getCompanyName());
+        real.setCompanyCode(stocks.getCompanyCode());
+        real.setTradePrice(tradePrcie);
+        real.setScore(score);
+        real.setPriceList(stockprice);
+
+        return real;
     }
 
-    public List<Sise> getSiseAll() {
-        return siseRepository.findAll();
+    public int saveOhlc() {
+        KoscomStockOhlc kosdaq = koscomApi.getOhlclists(MarketType.KOSDAQ.getName());
+        for(KoscomStockOhlc.StockOhlc ohlc : kosdaq.getIsuLists()) {
+            ohlc.setCollectDay(LocalDate.now().toString());
+            priceMapper.saveOhlc(ohlc);
+        }
+
+        KoscomStockOhlc kospi = koscomApi.getOhlclists(MarketType.KOSPI.getName());
+        for(KoscomStockOhlc.StockOhlc ohlc : kospi.getIsuLists()) {
+            ohlc.setCollectDay(LocalDate.now().toString());
+            priceMapper.saveOhlc(ohlc);
+        }
+        return 1;
     }
 
-    public List<Article> getArticleAll() {
-        return articleRepository.findAll();
+    public int getRealTimePrice(String companyCode) {
+        StockCompany company = companyMapper.findCompanyInfo(companyCode);
+        StockCompany companyOther = companyMapper.findCompanyOther(company.getScaleType());
+        String companys = company.getCompanyCode() + "," + companyOther.getCompanyCode();
+
+        KoscomRealTimePrice realTimePrice = koscomApi.getRealTimePrice(companys, company.getScaleType().toLowerCase());
+        for (KoscomRealTimePrice.RealPrice realPrice : realTimePrice.getIsulist()) {
+            if(realPrice.getIsuSrtCd().equals(company.getCompanyCode())) {
+                return Integer.valueOf(realPrice.getTrdPrc());
+            }
+        }
+        return 0;
     }
 
+    public List<StockCompany> getAll() {
+        return companyMapper.findCompanyList();
+    }
 }

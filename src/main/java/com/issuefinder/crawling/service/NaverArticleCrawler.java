@@ -2,9 +2,7 @@ package com.issuefinder.crawling.service;
 
 import com.issuefinder.crawling.config.properties.HostProperties;
 import com.issuefinder.crawling.controller.req.CrawlerRequest;
-import com.issuefinder.crawling.model.CrawlerDto;
 import com.issuefinder.crawling.model.NaverArticle;
-import com.issuefinder.crawling.model.entity.Article;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,11 +14,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-import static com.issuefinder.crawling.model.vo.ReferType.NAVER;
-import static com.issuefinder.crawling.model.vo.ResourceType.ARTICLE;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.summingInt;
 
 @Slf4j
 @Component
@@ -75,7 +68,6 @@ public class NaverArticleCrawler extends JsoupService implements Crawlerable {
         final Map<String, Summary> map = naverlist.stream()
                 .filter(x->LocalDate.parse(x.getCollectDay()).isAfter(now.minusDays(request.getLimitDays())))
                 .collect(Collectors.groupingBy(o -> o.getCollectDay(), collector));
-        System.out.println("map : " + map);
         return map;
     }
 }

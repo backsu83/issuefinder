@@ -1,4 +1,4 @@
-package com.issuefinder.crawling.api;
+package com.issuefinder.crawling.dao.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
