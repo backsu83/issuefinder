@@ -35,6 +35,18 @@
         ORDER BY si.collect_day;
     </select>
 
+    <select id="findOhlc" resultType="com.issuefinder.crawling.model.StockOhlc">
+        SELECT
+          company_code
+          , collect_day
+          , open_price
+          , high_price
+          , low_price
+          , trade_price
+        FROM quantreport.stock_ohlc
+        WHERE company_code = #{companyCode}
+    </select>
+
     <insert id="saveOhlc" parameterType="com.issuefinder.crawling.dao.api.KoscomStockOhlc">
         INSERT INTO quantreport.stock_ohlc
         (

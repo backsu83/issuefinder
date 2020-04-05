@@ -11,9 +11,7 @@
     </resultMap>
 
     <select id="findCompanyInfo" resultType="com.issuefinder.crawling.model.StockCompany">
-        SELECT business_code
-             , business_name
-             , company_name
+        SELECT company_name
              , company_code
              , market_type
           FROM quantreport.stock
@@ -21,9 +19,7 @@
     </select>
 
     <select id="findCompanyOther" resultType="com.issuefinder.crawling.model.StockCompany">
-        SELECT business_code
-             , business_name
-             , company_name
+        SELECT company_name
              , company_code
              , market_type
           FROM quantreport.stock

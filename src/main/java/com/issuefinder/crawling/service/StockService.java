@@ -8,6 +8,7 @@ import com.issuefinder.crawling.exception.ResourceNotFoundException;
 import com.issuefinder.crawling.mapper.StockCompanyMapper;
 import com.issuefinder.crawling.mapper.StockPriceMapper;
 import com.issuefinder.crawling.model.StockCompany;
+import com.issuefinder.crawling.model.StockOhlc;
 import com.issuefinder.crawling.model.StockPrice;
 import com.issuefinder.crawling.model.StockRealAnalysis;
 import com.issuefinder.crawling.model.vo.MarketType;
@@ -50,6 +51,11 @@ public class StockService {
 
         return real;
     }
+    
+    public List<StockOhlc> getOhlclists(String companyCode) {
+        List<StockOhlc> ohlc = priceMapper.findOhlc(companyCode);
+        return ohlc;
+    }
 
     public int saveOhlc() {
         KoscomStockOhlc kosdaq = koscomApi.getOhlclists(MarketType.KOSDAQ.getName());
@@ -68,10 +74,10 @@ public class StockService {
 
     public int getRealTimePrice(String companyCode) {
         StockCompany company = companyMapper.findCompanyInfo(companyCode);
-        StockCompany companyOther = companyMapper.findCompanyOther(company.getScaleType());
+        StockCompany companyOther = companyMapper.findCompanyOther(company.getMarketType());
         String companys = company.getCompanyCode() + "," + companyOther.getCompanyCode();
 
-        KoscomRealTimePrice realTimePrice = koscomApi.getRealTimePrice(companys, company.getScaleType().toLowerCase());
+        KoscomRealTimePrice realTimePrice = koscomApi.getRealTimePrice(companys, company.getMarketType().toLowerCase());
         for (KoscomRealTimePrice.RealPrice realPrice : realTimePrice.getIsulist()) {
             if(realPrice.getIsuSrtCd().equals(company.getCompanyCode())) {
                 return Integer.valueOf(realPrice.getTrdPrc());

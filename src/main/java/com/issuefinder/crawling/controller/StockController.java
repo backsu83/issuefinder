@@ -39,9 +39,9 @@ public class StockController {
     }
 
     @ApiOperation(value="종목 시고저중 조회")
-    @GetMapping("stock/{market}/highlow")
-    public StockResponse getStockPrice(@PathVariable String market) {
-        return new StockResponse(koscomApi.getOhlclists(market), SUCCESS);
+    @GetMapping("stock/{companyCode}/highlow")
+    public StockResponse getStockPrice(@PathVariable String companyCode) {
+        return new StockResponse(stockService.getOhlclists(companyCode), SUCCESS);
     }
 
     @ApiOperation(value="종목 현재가 조회")

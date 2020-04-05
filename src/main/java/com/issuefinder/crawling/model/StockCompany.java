@@ -11,7 +11,5 @@ public class StockCompany {
 
     private String companyCode;
     private String companyName;
-    private String businessCode;
-    private String businessName;
-    private String scaleType;
+    private String marketType;
 }
