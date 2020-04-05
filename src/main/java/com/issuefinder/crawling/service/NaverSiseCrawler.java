@@ -73,7 +73,6 @@ class NaverSiseCrawler extends JsoupService implements Crawlerable {
         final Map<String, Summary> map = dayprice.stream()
                 .filter(x->LocalDate.parse(x.getCollectDay()).isAfter(now.minusDays(request.getLimitDays())))
                 .collect(Collectors.groupingBy(o -> o.getCollectDay(), collector));
-        System.out.println("map = " + map);
         return map;
     }
 }

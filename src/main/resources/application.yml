@@ -15,7 +15,7 @@ server:
 spring:
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://quantreport.czgpnzk7zfrq.ap-northeast-2.rds.amazonaws.com:3306/quantreport?characterEncoding=UTF-8
+      jdbc-url: jdbc:mysql://quantreport.czgpnzk7zfrq.ap-northeast-2.rds.amazonaws.com:3306/quantreport?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
       username: admin
       password: quantreport
       driver-class-name: com.mysql.cj.jdbc.Driver

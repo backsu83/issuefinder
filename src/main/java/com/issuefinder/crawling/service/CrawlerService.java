@@ -29,7 +29,6 @@ public class CrawlerService {
     private final Crawlerable naverArticleCrawler;
     private final Crawlerable naverSiseCrawler;
 
-    @Transactional
     public void saveAll(CrawlerRequest request) {
         List<StockCompany> companyCodes = stockService.getAll();
         for (StockCompany info : companyCodes) {
