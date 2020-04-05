@@ -3,9 +3,11 @@ package com.issuefinder.crawling.dao.api;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KoscomCompanyInfo {
 
@@ -13,6 +15,5 @@ public class KoscomCompanyInfo {
     private String isuCd;
     private String isuKorNm;
     private String isuKorAbbr;
-    private String map_to;
-
+    private String market;
 }

@@ -64,13 +64,14 @@
            , unsympathy
            , views
         )
-        SELECT #{companyCode}
+        VALUES (#{companyCode}
              , #{collectDay}
              , #{refer}
              , #{score}
              , #{sympathy}
              , #{unsympathy}
-             , #{views}
+             , #{views})
+        ON DUPLICATE KEY UPDATE company_code = #{companyCode} , collect_day = #{collectDay}
     </insert>
 
     <insert id="savePrice" parameterType="com.issuefinder.crawling.model.StockPrice">
@@ -81,10 +82,11 @@
            , closing_price
            , volume
         )
-        SELECT #{companyCode}
+        VALUES (#{companyCode}
              , #{collectDay}
              , #{closingPrice}
-             , #{volume}
+             , #{volume})
+        ON DUPLICATE KEY UPDATE company_code = #{companyCode} , collect_day = #{collectDay}
     </insert>
 </mapper>
 

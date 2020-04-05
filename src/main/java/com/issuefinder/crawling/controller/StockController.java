@@ -54,6 +54,13 @@ public class StockController {
     @GetMapping("stock/highlow/save")
     public ResponseEntity saveOhlc() {
         return new ResponseEntity<>(stockService.saveOhlc(), HttpStatus.OK);
-
     }
+
+    @ApiOperation(value="주식종목 업데이트")
+    @GetMapping("stock/{market}/update")
+    public ResponseEntity updateStock(@PathVariable String market)  {
+        stockService.updateStock(market);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
 }

@@ -1,10 +1,13 @@
 package com.issuefinder.crawling.service;
 
 import com.issuefinder.crawling.controller.req.CrawlerRequest;
+import com.issuefinder.crawling.dao.api.KoscomApi;
+import com.issuefinder.crawling.dao.api.KoscomCompanyInfo;
 import com.issuefinder.crawling.mapper.StockPriceMapper;
 import com.issuefinder.crawling.model.StockArticle;
 import com.issuefinder.crawling.model.StockCompany;
 import com.issuefinder.crawling.model.StockPrice;
+import com.issuefinder.crawling.model.vo.MarketType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +38,7 @@ public class CrawlerService {
             savePrice(request);
         }
     }
-//
+
     public void saveArticle(CrawlerRequest request) {
         Map<String, Summary> map = naverArticleCrawler.parser(request);
         for (Map.Entry<String, Summary> elem : map.entrySet()) {
@@ -47,11 +50,10 @@ public class CrawlerService {
             article.setSympathy(elem.getValue().getSympathy());
             article.setUnsympathy(elem.getValue().getUnsympathy());
             article.setViews(elem.getValue().getViews());
-            System.out.println(article.toString());
             priceMapper.saveArticle(article);
         }
     }
-//
+
     public void savePrice(CrawlerRequest request) {
         Map<String, Summary> map = naverSiseCrawler.parser(request);
         for (Map.Entry<String, Summary> elem : map.entrySet()) {
@@ -62,9 +64,5 @@ public class CrawlerService {
             sise.setVolume(elem.getValue().getVolume());
             priceMapper.savePrice(sise);
         }
-    }
-
-    public void updateStock() {
-
     }
 }

@@ -15,7 +15,7 @@
              , business_name
              , company_name
              , company_code
-             , scale_type
+             , market_type
           FROM quantreport.stock
          WHERE company_code = #{companyCode}
     </select>
@@ -25,16 +25,29 @@
              , business_name
              , company_name
              , company_code
-             , scale_type
+             , market_type
           FROM quantreport.stock
-         WHERE scale_type = #{scale_type}
+         WHERE market_type = #{scale_type}
          LIMIT 1;
     </select>
 
     <select id="findCompanyList" resultMap="stockCompanyMap">
         SELECT company_name
              , company_code
-             , scale_type
+             , market_type
           FROM quantreport.stock
     </select>
+
+    <insert id="save" parameterType="com.issuefinder.crawling.dao.api.KoscomCompanyInfo">
+        INSERT INTO quantreport.stock
+        (
+             company_code
+           , company_name
+           , market_type
+        )
+        VALUES (#{isuSrtCd}
+             , #{isuKorNm}
+             , #{market})
+        ON DUPLICATE KEY UPDATE company_code = #{isuSrtCd}
+    </insert>
 </mapper>

@@ -1,6 +1,7 @@
 package com.issuefinder.crawling.service;
 
 import com.issuefinder.crawling.dao.api.KoscomApi;
+import com.issuefinder.crawling.dao.api.KoscomCompanyInfo;
 import com.issuefinder.crawling.dao.api.KoscomRealTimePrice;
 import com.issuefinder.crawling.dao.api.KoscomStockOhlc;
 import com.issuefinder.crawling.exception.ResourceNotFoundException;
@@ -81,5 +82,13 @@ public class StockService {
 
     public List<StockCompany> getAll() {
         return companyMapper.findCompanyList();
+    }
+
+    public void updateStock(String market) {
+        List<KoscomCompanyInfo> kosdaq = koscomApi.getStockList(market);
+        for(KoscomCompanyInfo companyInfo : kosdaq ) {
+            companyInfo.setMarket(market.toUpperCase());
+            companyMapper.save(companyInfo);
+        }
     }
 }

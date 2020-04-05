@@ -6,8 +6,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
@@ -36,12 +37,4 @@ public class CrawlerController {
         crawlerService.savePrice(request);
         return new ResponseEntity(HttpStatus.CREATED);
     }
-
-    @ApiOperation(value="주식종목 업데이트")
-    @PostMapping("/crawler/stock/sync")
-    public ResponseEntity updateStock()  {
-        crawlerService.updateStock();
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
 }

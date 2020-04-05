@@ -24,14 +24,14 @@ public class KoscomApi {
                 Duration.ofMillis(1000)).setReadTimeout(Duration.ofMillis(3000)).build();
     }
 
-    public List<KoscomCompanyInfo> getStockList() {
+    public List<KoscomCompanyInfo> getStockList(String market) {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("apikey", AUTH_KEY);
 
         URI uri = UriComponentsBuilder.newInstance()
                 .scheme("https")
                 .host("sandbox-apigw.koscom.co.kr")
-                .path("/v2/market/stocks/kospi/lists")
+                .path(String.format("/v2/market/stocks/%s/lists", market))
                 .queryParams(parameters).build().encode().toUri();
 
         ResponseEntity<KoscomMarketList> response

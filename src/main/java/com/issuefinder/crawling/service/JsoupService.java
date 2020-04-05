@@ -1,6 +1,5 @@
 package com.issuefinder.crawling.service;
 
-import com.issuefinder.crawling.exception.JsoupConnectionException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -8,14 +7,10 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Optional;
 
 public class JsoupService {
 
