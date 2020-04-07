@@ -19,8 +19,6 @@
                JOIN stock_sise si ON st.company_code = si.company_code AND st.collect_day = si.collect_day
         WHERE si.company_code = #{companyCode}
           AND si.collect_day BETWEEN #{startDate} AND #{endDate}
-          AND si.closing_price > 0
-          AND si.volume > 0
         ORDER BY si.collect_day
     </select>
 
