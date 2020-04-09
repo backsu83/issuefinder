@@ -3,6 +3,7 @@ package com.issuefinder.crawling.service;
 import com.issuefinder.crawling.dao.api.KoscomApi;
 import com.issuefinder.crawling.dao.api.KoscomCompanyInfo;
 import com.issuefinder.crawling.dao.api.KoscomRealTimePrice;
+import com.issuefinder.crawling.dao.api.KoscomStockBasic;
 import com.issuefinder.crawling.dao.api.KoscomStockOhlc;
 import com.issuefinder.crawling.exception.ResourceNotFoundException;
 import com.issuefinder.crawling.mapper.StockCompanyMapper;
@@ -23,9 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockService {
 
-    private final StockCompanyMapper companyMapper;
-    private final StockPriceMapper priceMapper;
-    private final KoscomApi koscomApi;
+    private final StockCompanyMapper companyMapper = null;
+    private final StockPriceMapper priceMapper = null;
+    private final KoscomApi koscomApi = null;
 
     public StockCompany getStockCompany(String companyCode) {
         StockCompany stocks = companyMapper.findCompanyInfo(companyCode);
@@ -69,6 +70,22 @@ public class StockService {
             ohlc.setCollectDay(LocalDate.now().toString());
             priceMapper.saveOhlc(ohlc);
         }
+        return 1;
+    }
+
+    public int saveStockList() {
+        // List<StockOhlc> ohlc = priceMapper.findOhlc(companyCode);
+        KoscomStockBasic stocklist = koscomApi.getNewStockList(MarketType.KOSPI.getName());
+        for(KoscomStockBasic stock : stocklist){
+            stock.setMarket("K");
+            priceMapper.saveStockList(stock);
+        }
+        KoscomStockBasic stocklist = koscomApi.getNewStockList(MarketType.KOSDAQ.getName());
+        for(KoscomStockBasic stock : stocklist){
+            stock.setMarket("Q");
+            priceMapper.saveStockList(stock);
+        }
+
         return 1;
     }
 

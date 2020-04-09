@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = SecurityProperties.PREFIX)
 public class SecurityProperties {
     public static final String PREFIX = "spring.jwt.token";
-    private String secretKey;
-    private String expireLength;
+    private String secretKey = "";
+    private String expireLength ="";
 
 }

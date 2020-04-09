@@ -4,6 +4,30 @@ public class KoscomStockMaster {
 
     private String isuKorAbbrv;
     private String isuSrtCd;
+   //  private String 
+
+    /*
+                    code: '',
+                    open: 0,
+                    high: 0,
+                    low: 0,
+                    close: 0,
+                    name:'',
+                    volume: 0,
+                    volMoney: 0,
+                    highest52: 0,
+                    lowest52: 0,
+                    foreignRation:0,
+                    totalPrice:0,
+                    faceValue:0,
+                    listedStocks:0,
+                    per:0.0,
+                    pbr:0.0,
+                    eps:0,
+                    bps:0,
+                    industry:'',
+                    dividendRate: 0, 
+    */
 
 
     /*

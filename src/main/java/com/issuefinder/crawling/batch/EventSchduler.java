@@ -31,4 +31,10 @@ public class EventSchduler {
     public void batchOhlc() {
         stockService.saveOhlc();
     }
+
+    // 매일 8시 5분
+    @Scheduled(cron = "0 5 8 * * *")
+    public void batchUpdateStockList() {
+        stockService.saveStockList();
+    }
 }

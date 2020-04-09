@@ -59,6 +59,44 @@ public class KoscomApi {
         return null;
     }
 
+    
+    // public KoscomStockOhlc getStockMaster(String market, String itemCode) {
+    //     MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    //     parameters.add("apikey", AUTH_KEY);
+
+    //     URI uri = UriComponentsBuilder.newInstance()
+    //             .scheme("https")
+    //             .host("sandbox-apigw.koscom.co.kr")
+    //             .path(String.format("/v2/market/multiquote/stocks/%s/ohlclists" , market))
+    //             .queryParams(parameters).build().encode().toUri();
+
+    //     ResponseEntity<KoscomStockOhlc> response = restTemplate.getForEntity(uri, KoscomStockOhlc.class);
+    //     if (response.getStatusCode() == HttpStatus.OK) {
+    //         return response.getBody();
+    //     }
+    //     return null;
+    // }
+
+    public KoscomStockBasic getNewStockList(String market) {
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        parameters.add("apikey", AUTH_KEY);
+
+        URI uri = UriComponentsBuilder.newInstance()
+                .scheme("https")
+                .host("sandbox-apigw.koscom.co.kr")
+                .path(String.format("/v2/market/multiquote/stocks/%s/lists", market))
+                .queryParams(parameters).build().encode().toUri();
+
+        ResponseEntity<KoscomStockBasic> response = restTemplate.getForEntity(uri, KoscomStockBasic.class);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            
+            System.out.print(response.getBody());
+            return response.getBody();
+        }
+        return null;
+    }
+
+
     public KoscomRealTimePrice getRealTimePrice(String companys , String market) {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("apikey", AUTH_KEY);

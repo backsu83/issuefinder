@@ -63,6 +63,18 @@
              , #{trdPrc}
     </insert>
 
+    <insert id="saveStockList" parameterType="com.issuefinder.crawling.dao.api.KoscomStockBasic">
+        INSERT INTO quantreport.stock_update
+        (
+             code
+           , name
+           , market
+        )
+        SELECT #{code}
+             , #{name}
+             , #{market}
+    </insert>
+
     <insert id="saveArticle" parameterType="com.issuefinder.crawling.model.StockArticle">
         INSERT INTO quantreport.stock_article
         (

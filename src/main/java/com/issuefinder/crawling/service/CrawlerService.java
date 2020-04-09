@@ -24,10 +24,10 @@ import static com.issuefinder.crawling.model.vo.ReferType.NAVER;
 @RequiredArgsConstructor
 public class CrawlerService {
 
-    private final StockPriceMapper priceMapper;
-    private final StockService stockService;
-    private final Crawlerable naverArticleCrawler;
-    private final Crawlerable naverSiseCrawler;
+    private final StockPriceMapper priceMapper = null;
+    private final StockService stockService = null;
+    private final Crawlerable naverArticleCrawler = null;
+    private final Crawlerable naverSiseCrawler = null;
 
     public void saveAll(CrawlerRequest request) {
         List<StockCompany> companyCodes = stockService.getAll();
