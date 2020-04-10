@@ -46,8 +46,8 @@ public class StockController {
 
     @ApiOperation(value="종목 리스트 업데이트")
     @GetMapping("stock/listUpdate")
-    public StockResponse getStockPrice(@PathVariable String companyCode) {
-        return new StockResponse(stockService.saveStockList()), SUCCESS);
+    public StockResponse updateStockList(@PathVariable String companyCode) {
+        return new StockResponse(stockService.saveStockList(), SUCCESS);
     }
 
     @ApiOperation(value="종목 현재가 조회")

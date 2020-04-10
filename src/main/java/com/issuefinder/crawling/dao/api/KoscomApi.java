@@ -90,7 +90,7 @@ public class KoscomApi {
         ResponseEntity<KoscomStockBasic> response = restTemplate.getForEntity(uri, KoscomStockBasic.class);
         if (response.getStatusCode() == HttpStatus.OK) {
             
-            System.out.print(response.getBody());
+            System.out.print(" res getBody >>>>> " + response.getBody());
             return response.getBody();
         }
         return null;

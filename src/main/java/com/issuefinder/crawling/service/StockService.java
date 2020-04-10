@@ -75,16 +75,16 @@ public class StockService {
 
     public int saveStockList() {
         // List<StockOhlc> ohlc = priceMapper.findOhlc(companyCode);
-        KoscomStockBasic stocklist = koscomApi.getNewStockList(MarketType.KOSPI.getName());
-        for(KoscomStockBasic stock : stocklist){
-            stock.setMarket("K");
-            priceMapper.saveStockList(stock);
-        }
-        KoscomStockBasic stocklist = koscomApi.getNewStockList(MarketType.KOSDAQ.getName());
-        for(KoscomStockBasic stock : stocklist){
-            stock.setMarket("Q");
-            priceMapper.saveStockList(stock);
-        }
+        KoscomStockBasic stocklistKospi = koscomApi.getNewStockList(MarketType.KOSPI.getName());
+        // for(KoscomStockBasic stock : stocklistKospi){
+        //     stock.setMarket("K");
+        //     priceMapper.saveStockList(stock);
+        // }
+        KoscomStockBasic stocklistKosdaq = koscomApi.getNewStockList(MarketType.KOSDAQ.getName());
+        // for(KoscomStockBasic stock : stocklistKosdaq){
+        //     stock.setMarket("Q");
+        //     priceMapper.saveStockList(stock);
+        // }
 
         return 1;
     }
